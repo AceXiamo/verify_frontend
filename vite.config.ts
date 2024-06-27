@@ -16,6 +16,7 @@ import Shiki from '@shikijs/markdown-it'
 import WebfontDownload from 'vite-plugin-webfont-dl'
 import VueRouter from 'unplugin-vue-router/vite'
 import { VueRouterAutoImports } from 'unplugin-vue-router'
+import vueJsx from '@vitejs/plugin-vue-jsx'
 
 export default defineConfig({
   resolve: {
@@ -32,6 +33,8 @@ export default defineConfig({
         }),
       },
     }),
+
+    vueJsx(),
 
     // https://github.com/posva/unplugin-vue-router
     VueRouter({
@@ -74,7 +77,11 @@ export default defineConfig({
 
     // https://github.com/antfu/unocss
     // see uno.config.ts for config
-    Unocss(),
+    Unocss({
+      include: [
+        path.resolve(__dirname, 'src/**/*.{vue,ts,tsx}'),
+      ],
+    }),
 
     // https://github.com/unplugin/unplugin-vue-markdown
     // Don't need this? Try vitesse-lite: https://github.com/antfu/vitesse-lite
@@ -164,5 +171,15 @@ export default defineConfig({
   ssr: {
     // TODO: workaround until they support native ESM
     noExternal: ['workbox-window', /vue-i18n/],
+  },
+
+  server: {
+    proxy: {
+      '/api': {
+        target: 'http://localhost:8080',
+        changeOrigin: true,
+        rewrite: path => path.replace(/^\/api/, ''),
+      },
+    },
   },
 })

@@ -2,12 +2,18 @@
   "compilerOptions": {
     "target": "ESNext",
     "jsx": "preserve",
-    "lib": ["DOM", "ESNext"],
+    "jsxImportSource": "vue",
+    "lib": [
+      "DOM",
+      "ESNext"
+    ],
     "baseUrl": ".",
     "module": "ESNext",
     "moduleResolution": "Bundler",
     "paths": {
-      "~/*": ["src/*"]
+      "~/*": [
+        "src/*"
+      ]
     },
     "resolveJsonModule": true,
     "types": [
@@ -21,7 +27,7 @@
     "allowJs": true,
     "strict": true,
     "strictNullChecks": true,
-    "noUnusedLocals": true,
+    "noUnusedLocals": false,
     "noEmit": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
@@ -34,5 +40,9 @@
       "@vue-macros/volar/define-slots"
     ]
   },
-  "exclude": ["dist", "node_modules", "cypress"]
+  "exclude": [
+    "dist",
+    "node_modules",
+    "cypress"
+  ]
 }

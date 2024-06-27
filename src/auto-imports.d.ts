@@ -29,9 +29,9 @@ declare global {
   const debouncedWatch: typeof import('@vueuse/core')['debouncedWatch']
   const defineAsyncComponent: typeof import('vue')['defineAsyncComponent']
   const defineComponent: typeof import('vue')['defineComponent']
-  const defineLoader: typeof import('vue-router/auto')['defineLoader']
   const definePage: typeof import('unplugin-vue-router/runtime')['definePage']
   const eagerComputed: typeof import('@vueuse/core')['eagerComputed']
+  const edit: typeof import('./stores/edit')['default']
   const effectScope: typeof import('vue')['effectScope']
   const extendRef: typeof import('@vueuse/core')['extendRef']
   const getCurrentInstance: typeof import('vue')['getCurrentInstance']
@@ -330,6 +330,7 @@ declare module 'vue' {
     readonly defineComponent: UnwrapRef<typeof import('vue')['defineComponent']>
     readonly definePage: UnwrapRef<typeof import('unplugin-vue-router/runtime')['definePage']>
     readonly eagerComputed: UnwrapRef<typeof import('@vueuse/core')['eagerComputed']>
+    readonly edit: UnwrapRef<typeof import('./stores/edit')['default']>
     readonly effectScope: UnwrapRef<typeof import('vue')['effectScope']>
     readonly extendRef: UnwrapRef<typeof import('@vueuse/core')['extendRef']>
     readonly getCurrentInstance: UnwrapRef<typeof import('vue')['getCurrentInstance']>
@@ -621,6 +622,7 @@ declare module '@vue/runtime-core' {
     readonly defineComponent: UnwrapRef<typeof import('vue')['defineComponent']>
     readonly definePage: UnwrapRef<typeof import('unplugin-vue-router/runtime')['definePage']>
     readonly eagerComputed: UnwrapRef<typeof import('@vueuse/core')['eagerComputed']>
+    readonly edit: UnwrapRef<typeof import('./stores/edit')['default']>
     readonly effectScope: UnwrapRef<typeof import('vue')['effectScope']>
     readonly extendRef: UnwrapRef<typeof import('@vueuse/core')['extendRef']>
     readonly getCurrentInstance: UnwrapRef<typeof import('vue')['getCurrentInstance']>

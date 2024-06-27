@@ -1,52 +1,112 @@
-<script setup lang="ts">
+<script setup lang="tsx">
+import { ElMessageBox } from 'element-plus'
+import DataTable from '~/core/DataTable'
+import QueryForm from '~/core/QueryForm'
+import type { FieldConfig } from '~/api'
+import { FieldTypes, deleteVerifyManage, getVerifyManageList } from '~/api'
+import { Tag, VerifyNode } from '~/components/FC'
+import EditDialog from '~/components/EditDialog'
+
 defineOptions({
   name: 'IndexPage',
 })
-const user = useUserStore()
-const name = ref(user.savedName)
+const tableData = ref<FieldConfig[]>([])
+const loading = ref(false)
+const QueryFormNode = QueryForm({
+  actions: [
+    {
+      text: '添加',
+      type: 'primary',
+      handler: () => {
+        EditDialog.show({
+          item: {},
+          reload: loadData,
+        })
+      },
+    },
+  ],
+})
 
-const router = useRouter()
-function go() {
-  if (name.value)
-    router.push(`/hi/${encodeURIComponent(name.value)}`)
+const DataTableNode = DataTable<FieldConfig>({
+  items: tableData,
+  pagination: { show: false },
+  loading,
+  columns: [
+    {
+      label: '字段名',
+      key: 'key',
+      width: 200,
+    },
+    {
+      label: '字段类型',
+      render: (item) => {
+        const data = FieldTypes.find(type => type.value === item.type)
+        return <Tag str={data?.label} className={data?.className} />
+      },
+      width: 200,
+    },
+    {
+      label: '校验规则',
+      render: (item) => {
+        return <VerifyNode item={item} />
+      },
+    },
+    {
+      label: '描述',
+      key: 'desc',
+      width: 500,
+    },
+  ],
+  action: {
+    width: 200,
+    items: [
+      {
+        text: '编辑',
+        type: 'primary',
+        onClick: (item) => {
+          EditDialog.show({
+            item,
+            reload: loadData,
+          })
+        },
+      },
+      {
+        text: '删除',
+        type: 'danger',
+        onClick: (item) => {
+          ElMessageBox.confirm('确定删除吗？', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning',
+          }).then(() => {
+            deleteVerifyManage({ key: item.key! }).then(() => {
+              loadData()
+            })
+          })
+        },
+      },
+    ],
+  },
+})
+
+function loadData() {
+  loading.value = true
+  getVerifyManageList().then((res) => {
+    tableData.value = res.data || []
+  }).finally(() => {
+    loading.value = false
+  })
 }
 
-const { t } = useI18n()
+onMounted(() => {
+  loadData()
+})
 </script>
 
 <template>
-  <div>
-    <div text-4xl>
-      <div i-carbon-campsite inline-block />
-    </div>
-    <p>
-      <a rel="noreferrer" href="https://github.com/antfu/vitesse" target="_blank">
-        Vitesse
-      </a>
-    </p>
-    <p>
-      <em text-sm opacity-75>{{ t('intro.desc') }}</em>
-    </p>
-
-    <div py-4 />
-
-    <TheInput
-      v-model="name"
-      :placeholder="t('intro.whats-your-name')"
-      autocomplete="false"
-      @keydown.enter="go"
-    />
-    <label class="hidden" for="input">{{ t('intro.whats-your-name') }}</label>
-
-    <div>
-      <button
-        m-3 text-sm btn
-        :disabled="!name"
-        @click="go"
-      >
-        {{ t('button.go') }}
-      </button>
-    </div>
+  <div flex flex-col px="10px">
+    <QueryFormNode />
+    <DataTableNode />
   </div>
 </template>
 
