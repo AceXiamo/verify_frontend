@@ -166,6 +166,7 @@ const DialogContent = defineComponent({
           type: useTextField({
             type: 'textarea',
           }),
+          remark: '#[key] 为占位符，会根据传入对象进行替换',
         },
         {
           label: 'JavaScript',
@@ -219,6 +220,7 @@ const DialogContent = defineComponent({
             type: 'textarea',
           }),
           show: model => model.type === 'number',
+          remark: '#[key] 为占位符，会根据传入对象进行替换',
           col: 24,
         },
         {
@@ -253,6 +255,7 @@ const DialogContent = defineComponent({
             type: 'textarea',
           }),
           show: model => model.type === 'number',
+          remark: '#[key] 为占位符，会根据传入对象进行替换',
           col: 24,
         },
         {
